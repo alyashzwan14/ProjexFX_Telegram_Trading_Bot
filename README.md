@@ -9,7 +9,7 @@ Risk-to-Reward Calculation: Using stop loss and take profit, displays size in pi
 Multiple Take Profits: Place up to two take profits using half position size for each.
 Future Feature: Trailing stop loss
 
-Installation
+1. Installation
 Prerequisites:
 
 Telegram Account
@@ -17,7 +17,8 @@ MetaAPI Account (Sign Up)
 Render Account (Sign Up)
 Steps:
 
-Create a Telegram Bot:
+
+2. Create a Telegram Bot:
 
 Talk to @BotFather on Telegram to create a new bot and save the API token.
 Set Up on Render:
