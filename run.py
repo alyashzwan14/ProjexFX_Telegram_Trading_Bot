@@ -90,7 +90,7 @@ def ParseSignal(signal: str) -> dict:
     if(trade['Symbol'] not in SYMBOLS):
         return {}
     
-    # checks wheter or not to convert entry to float because of market exectution option ("NOW")
+    # checks whether or not to convert entry to float because of market execution option ("NOW")
     if(trade['OrderType'] == 'Buy' or trade['OrderType'] == 'Sell'):
         trade['Entry'] = (signal[1].split())[-1]
     
@@ -117,6 +117,9 @@ def GetTradeInformation(update: Update, trade: dict, balance: float) -> None:
         trade: dictionary that stores trade information
         balance: current balance of the MetaTrader account
     """
+
+    # Ensure Entry is converted to float if not already
+    trade['Entry'] = float(trade['Entry'])
 
     # calculates the stop loss in pips
     if(trade['Symbol'] == 'XAUUSD'):
@@ -249,6 +252,9 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
             # uses ask price if the order type is a sell
             if(trade['OrderType'] == 'Sell'):
                 trade['Entry'] = float(price['ask'])
+
+        # Ensure Entry is converted to float if it's a string
+        trade['Entry'] = float(trade['Entry'])
 
         # produces a table with trade information
         GetTradeInformation(update, trade, account_information['balance'])
