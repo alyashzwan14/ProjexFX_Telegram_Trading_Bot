@@ -22,7 +22,7 @@ ACCOUNT_ID = os.environ.get("ACCOUNT_ID")
 TOKEN = os.environ.get("TOKEN")
 TELEGRAM_USER = os.environ.get("TELEGRAM_USER")
 
-# Heroku Credentials
+# Heroku Credentials 
 APP_URL = os.environ.get("APP_URL")
 
 # Port number for Telegram bot web hook
@@ -236,7 +236,7 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
         # obtains account information from MetaTrader server
         account_information = await connection.get_account_information()
 
-        update.effective_message.reply_text("Successfully connected to MetaTrader!\nCalculating trade risk ...")
+        update.effective_message.reply_text("Successfully connected to MetaTrader!\nCalculating trade risk ... ")
 
         # checks if the order is a market execution to get the current price of symbol
         if(trade['Entry'] == 'NOW'):
@@ -257,7 +257,7 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
         if(enterTrade == True):
 
             # enters trade on to MetaTrader account
-            update.effective_message.reply_text("Entering trade on MetaTrader Account ...")
+            update.effective_message.reply_text("Entering trade on MetaTrader Account ... 👨🏾‍💻")
 
             try:
                 # executes buy market execution order
@@ -291,10 +291,10 @@ async def ConnectMetaTrader(update: Update, trade: dict, enterTrade: bool):
                         result = await connection.create_stop_sell_order(trade['Symbol'], trade['PositionSize'] / len(trade['TP']), trade['Entry'], trade['StopLoss'], takeProfit)
                 
                 # sends success message to user
-                update.effective_message.reply_text("Trade entered successfully, Good Luck!")
+                update.effective_message.reply_text("Trade entered successfully! ")
                 
                 # prints success message to console
-                logger.info('\nTrade entered successfully, Good Luck!')
+                logger.info('\nTrade entered successfully!')
                 logger.info('Result Code: {}\n'.format(result['stringCode']))
             
             except Exception as error:
@@ -330,7 +330,7 @@ def PlaceTrade(update: Update, context: CallbackContext) -> int:
 
             # sets the user context trade equal to the parsed trade
             context.user_data['trade'] = trade
-            update.effective_message.reply_text("Trade Successfully Parsed! \nConnecting to MetaTrader ... \n(May take a while)")
+            update.effective_message.reply_text("Trade Successfully Parsed! \nConnecting to MetaTrader ... \n(May take a while) ")
         
         except Exception as error:
             logger.error(f'Error: {error}')
@@ -369,11 +369,11 @@ def CalculateTrade(update: Update, context: CallbackContext) -> int:
 
             # sets the user context trade equal to the parsed trade
             context.user_data['trade'] = trade
-            update.effective_message.reply_text("Trade Successfully Parsed!\nConnecting to MetaTrader ... (May take a while)")
+            update.effective_message.reply_text("Trade Successfully Parsed! \nConnecting to MetaTrader ... (May take a while) ⏰")
         
         except Exception as error:
             logger.error(f'Error: {error}')
-            errorMessage = f"There was an error parsing this trade 😕\n\nError: {error}\n\nPlease re-enter trade with this format:\n\nBUY/SELL SYMBOL\nEntry \nSL \nTP \n\nOr use the /cancel to command to cancel this action."
+            errorMessage = f"There was an error parsing this trade \n\nError: {error}\n\nPlease re-enter trade with this format:\n\nBUY/SELL SYMBOL\nEntry \nSL \nTP \n\nOr use the /cancel to command to cancel this action."
             update.effective_message.reply_text(errorMessage)
 
             # returns to CALCULATE to reattempt trade parsing
@@ -395,7 +395,7 @@ def unknown_command(update: Update, context: CallbackContext) -> None:
         context: CallbackContext object that stores commonly used objects in handler callbacks
     """
     if(not(update.effective_message.chat.username == TELEGRAM_USER)):
-        update.effective_message.reply_text("Sorry, You are not authorized to use this bot!")
+        update.effective_message.reply_text("You are not authorized to use this bot! 🙅🏽‍♂️")
         return
 
     update.effective_message.reply_text("Unknown command. Use /trade to place a trade or /calculate to find information for a trade. You can also use the /help command to view instructions for this bot.")
@@ -412,7 +412,7 @@ def welcome(update: Update, context: CallbackContext) -> None:
         context: CallbackContext object that stores commonly used objects in handler callbacks
     """
 
-    welcome_message = "Hi, Welcome to the ProjexFX - Signal Trading MM Telegram Bot! \n\nYou can use this bot to enter trades directly from Telegram and get a detailed look at your risk to reward ratio with profit, loss, and calculated lot size. You are able to change specific settings such as allowed symbols, risk factor, and more from your personalized Python script and environment variables.\n\nUse the /help command to view instructions and example trades."
+    welcome_message = "Welcome to the ProjexFX Telegram Trading Bot! \n\nYou can use this bot to enter trades directly from Telegram and get a detailed look at your risk to reward ratio with profit, loss, and calculated lot size. You are able to change specific settings such as allowed symbols, risk factor, and more from your personalized.\n\nUse the /help command to view instructions and example trades."
     
     # sends messages to user
     update.effective_message.reply_text(welcome_message)
@@ -429,7 +429,7 @@ def help(update: Update, context: CallbackContext) -> None:
 
     help_message = "This bot is used to automatically enter trades onto your MetaTrader account directly from Telegram. To begin, ensure that you are authorized to use this bot by adjusting your Python script or environment variables.\n\nThis bot supports all trade order types (Market Execution, Limit, and Stop)\n\nAfter an extended period away from the bot, please be sure to re-enter the start command to restart the connection to your MetaTrader account."
     commands = "List of commands:\n/start : displays welcome message\n/help : displays list of commands and example trades\n/trade : takes in user inputted trade for parsing and placement\n/calculate : calculates trade information for a user inputted trade"
-    trade_example = "Example Trades:\n\n"
+    trade_example = "Example Trades :\n\n"
     market_execution_example = "Market Execution:\nBUY GBPUSD\nEntry NOW\nSL 1.14336\nTP 1.28930\nTP 1.29845\n\n"
     limit_example = "Limit Execution:\nBUY LIMIT GBPUSD\nEntry 1.14480\nSL 1.14336\nTP 1.28930\n\n"
     note = "You are able to enter up to two take profits. If two are entered, both trades will use half of the position size, and one will use TP1 while the other uses TP2.\n\nNote: Use 'NOW' as the entry to enter a market execution trade."
@@ -476,7 +476,7 @@ def Trade_Command(update: Update, context: CallbackContext) -> int:
         context: CallbackContext object that stores commonly used objects in handler callbacks
     """
     if(not(update.effective_message.chat.username == TELEGRAM_USER)):
-        update.effective_message.reply_text("You are not authorized to use this bot!")
+        update.effective_message.reply_text("You are not authorized to use this bot! 🙅🏽‍♂️")
         return ConversationHandler.END
     
     # initializes the user's trade as empty prior to input and parsing
@@ -495,7 +495,7 @@ def Calculation_Command(update: Update, context: CallbackContext) -> int:
         context: CallbackContext object that stores commonly used objects in handler callbacks
     """
     if(not(update.effective_message.chat.username == TELEGRAM_USER)):
-        update.effective_message.reply_text("Sorry, You are not authorized to use this bot!")
+        update.effective_message.reply_text("You are not authorized to use this bot! 🙅🏽‍♂️")
         return ConversationHandler.END
 
     # initializes the user's trade as empty prior to input and parsing
